@@ -73,5 +73,10 @@ int main()
    {
        cout<<vett[i]<<" ";
    }
+    cout<<"Viceversa ";
+   for (int i=n-1;i>=0;i=i-1) 
+   {
+       cout<<vett[i]<<" ";
+   }
     return 0;
 }
