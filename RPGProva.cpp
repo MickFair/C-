@@ -11,7 +11,7 @@ Write your code in this editor and press "Run" button to compile and execute it.
 
 using namespace std;
 
-void assegnapos(char vet[][8])
+void assegnapos(char vet[][8]) //Assegna gli eventi alle stanze in modo randomizzato piazzando UNA sola uscita
 {
     srand(time(NULL));
 for (int j=0;j<8;j++)
@@ -38,7 +38,8 @@ int uscitaY=(rand())%8;
 vet[uscitaX][uscitaY]='U';
 }
 
-void mostrapos(char vet[][8]){
+void mostrapos(char vet[][8])//Mostra tutti gli eventi nelle stanze
+{
     cout<<" __ __ __ __ __ __ __ __"<<endl;
     for (int j=0;j<8;j++)
     {
@@ -49,7 +50,7 @@ void mostrapos(char vet[][8]){
         cout<<"|"<<endl;
     }
 }
-void mostramappa()
+void mostramappa()//Mostra la mappa del gioco vuota
 {
 cout<<"Questa e' la mappa"<<endl;
 cout<<" __ __ __ __ __ __ __ __"<<endl;
@@ -60,10 +61,10 @@ cout<<"|__|__|__|__|__|__|__|__|"<<endl;
 cout<<"|__|__|__|__|__|__|__|__|"<<endl;
 cout<<"|__|__|__|__|__|__|__|__|"<<endl;
 cout<<"|__|__|__|__|__|__|__|__|"<<endl;
-cout<<"|__|__|__|__|__|__|__|__|"<<endl;
+cout<<"|__|__|__|_X|__|__|__|__|"<<endl;
 }
 
-void percorsoutente(char vet[][8])
+void percorsoutente(char vet[][8],bool uscitatrovata) //Mostra la mappa percorsa dall'utente includendo l'uscita
 {
     cout<<" __ __ __ __ __ __ __ __"<<endl;
     for (int j=0;j<8;j++)
@@ -72,34 +73,19 @@ void percorsoutente(char vet[][8])
         {
             if (vet[i][j]=='X')
             cout<<"| X";
-            
-            else if (vet[i][j]=='+')
-            cout<<"| +";
-            
-            else
-            cout<<"|__";
-        }
-        cout<<"|"<<endl;
-    }
-}
-void percorsoutentecompleto(char vet[][8])
-{
-    cout<<" __ __ __ __ __ __ __ __"<<endl;
-    for (int j=0;j<8;j++)
-    {
-        for (int i=0;i<8;i++)
-        {
-            if (vet[i][j]=='X')
-            cout<<"| X";
-            
-            else if (vet[i][j]=='+')
-            cout<<"| +";
-            
             else if (vet[i][j]=='U')
-            cout<<"| U";
+            {
+            if (uscitatrovata)
+                {
+                cout<<"| U";
+                }
+            else
+                cout<<"|__";
+            }
+            else if (vet[i][j]=='+')
+            cout<<"| +";
             else
             cout<<"|__";
-
         }
         cout<<"|"<<endl;
     }
@@ -118,52 +104,97 @@ void direzioniutente(char vet[][8],int colonne,int righe)
             case 'U':
             if (righe-1>=0)
             {
-            vet[colonne][righe]='+';
-            righe=righe-1;
-            if (vet[colonne][righe]!='U')
-                vet[colonne][righe]='X';
-            else
+                vet[colonne][righe]='+';
+                righe=righe-1;
+                switch (vet[colonne][righe])
                 {
-                vet[colonne][righe]=='U';
-                uscita=true;
+                    case 'E':
+                    cout<<"Stanza vuota"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'B':
+                    cout<<"Battaglia"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'O':
+                    cout<<"Oggetto"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case '+':
+                    vet[colonne][righe]='X';
+                	cout<<"Sei gia' passato qui..."<<endl;
+                    break;
+                    default:
+                    uscita=true;
+                    break;
                 }
-                percorsoutente(vet);
-            }
+                percorsoutente(vet,uscita);
+        	}
             else
-            cout<<"Muro!"<<endl;
+                cout<<"Muro!"<<endl;
             break;
             case 'D':
             if (righe+1<8)
-                {
+            {
                 vet[colonne][righe]='+';
                 righe=righe+1;
-                if (vet[colonne][righe]!='U')
-                    vet[colonne][righe]='X';
-            else
+                switch (vet[colonne][righe])
                 {
-                vet[colonne][righe]=='U';
-                uscita=true;
+                    case 'E':
+                    cout<<"Stanza vuota"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'B':
+                    cout<<"Battaglia"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'O':
+                    cout<<"Oggetto"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case '+':
+                    vet[colonne][righe]='X';
+                	cout<<"Sei gia' passato qui..."<<endl;
+                    break;
+                    default:
+                    uscita=true;
+                    break;
                 }
-                    percorsoutente(vet);
-                }
+                percorsoutente(vet,uscita);
+            }
             else
                 cout<<"Muro!"<<endl;
             break;
             case 'R':
             if (colonne+1<8)
-                {
+            {
                 vet[colonne][righe]='+';
                 colonne=colonne+1;
-                if (vet[colonne][righe]!='U')
+                switch (vet[colonne][righe])
+                {
+                    case 'E':
+                    cout<<"Stanza vuota"<<endl;
                     vet[colonne][righe]='X';
-                else
-                    {
-                    vet[colonne][righe]=='U';
+                    break;
+                    case 'B':
+                    cout<<"Battaglia"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'O':
+                    cout<<"Oggetto"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case '+':
+                    vet[colonne][righe]='X';
+                	cout<<"Sei gia' passato qui..."<<endl;
+                    break;
+                    default:
                     uscita=true;
-                    }
-                    
-                    percorsoutente(vet);
+                    break;
                 }
+                percorsoutente(vet,uscita);
+        	}
+            
             else
                 cout<<"Muro!"<<endl;
             break;
@@ -172,15 +203,30 @@ void direzioniutente(char vet[][8],int colonne,int righe)
             {
             vet[colonne][righe]='+';
             colonne=colonne-1;
-            if (vet[colonne][righe]!='U')
-                vet[colonne][righe]='X';
-            else
+            switch (vet[colonne][righe])
                 {
-                vet[colonne][righe]=='U';
-                uscita=true;
+                    case 'E':
+                    cout<<"Stanza vuota"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'B':
+                    cout<<"Battaglia"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case 'O':
+                    cout<<"Oggetto"<<endl;
+                    vet[colonne][righe]='X';
+                    break;
+                    case '+':
+                    vet[colonne][righe]='X';
+                	cout<<"Sei gia' passato qui..."<<endl;
+                    break;
+                    default:
+                    uscita=true;
+                    break;
                 }
-                percorsoutente(vet);
-            }
+                percorsoutente(vet,uscita);
+        	}
             else
             cout<<"Muro!"<<endl;
             break;
@@ -207,12 +253,9 @@ char vetmappa[col][rig];
 assegnapos(vetmappa);
 vetmappa[colonna][riga]='X';
 direzioniutente(vetmappa,colonna,riga);
-percorsoutentecompleto(vetmappa);
-cout<<"Hai trovato l'uscita"<<endl;
+cout<<"Hai trovato l'uscita"<<endl<<endl<<"Percoso COMPLETO"<<endl;
+mostrapos(vetmappa);
 system("pause");
-
-
-
 
 
 
